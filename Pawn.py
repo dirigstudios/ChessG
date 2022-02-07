@@ -14,8 +14,5 @@ class Pawn(Piece):
         else:
             self.posy = self.posy + 1
 
-
-xd = Pawn("c", 2)
-print(xd.posy)
-xd.move()
-print(xd.posy)
+    def type(self):
+        return "pawn"
