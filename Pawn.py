@@ -3,6 +3,10 @@ from Piece import Piece
 
 class Pawn(Piece):
 
+    def __init__(self, posx, posy):
+        super().__init__(posx, posy)
+        self.firstmove = True
+
     def move(self):
         if self.firstmove:
             self.firstmove = False
@@ -12,6 +16,6 @@ class Pawn(Piece):
 
 
 xd = Pawn("c", 2)
-print(xd)
+print(xd.posy)
 xd.move()
-print(xd)
+print(xd.posy)
