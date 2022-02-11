@@ -1,22 +1,12 @@
+from Pieces import Piece
 class Board():
-    def __init__(self,state):
-        self.board = [1]*8
-        for i in range(8):
-            self.board[i] =[1]*8
-        self.state = state
-
-    def start (self,elem):
-        for i in self.board:
-            for j in i:
-                j=j+1
+    def __init__(self):
+        self.board= [Piece(1,1,"B")]*8
 
     def show(self):
         for i in self.board:
-            for j in range(len(i)):
-                print("[",i[j],"]", end=" ")
-                if j==7:
-                    print("\n")
+            (i.name("P"))
 
-tablero= Board("Iniciado")
-tablero.start(1)
+
+tablero= Board()
 tablero.show()
