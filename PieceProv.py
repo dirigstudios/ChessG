@@ -5,11 +5,18 @@ class Piece:
         self.posy = posy
         self.color = color
 
-    def __str__(self):
-        return self.posx + str(self.posy)
+    def getColor(self):
+        return self.color
 
-    def move(self):  # cada pieza tendra su propia funcion de movimiento
-        print("esta pieza no existe")
+    def setPos(self, posx, posy):
+        self.posy = posy
+        self.posx = posx
+
+    def __str__(self):
+        return f"[   ]"
+
+    def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
+        return "esta pieza no existe"
 
     def name(self):
         pass
@@ -24,9 +31,26 @@ class Pawn(Piece):
             self.type = "p"
         else:
             self.type = "P"
+        self.firstmove = True
+
+    def getColor(self):
+        return self.color
 
     def name(self):
-        return print(f"[{self.type}]", end="")
+        return print(f"[{self.type},{self.color}]", end=" ")
+
+    def getType(self):
+        return "peon"
+
+    def setFirstMoveFalse(self):
+        self.firstmove=False
+
+    def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
+        if (self.firstmove and posy-self.posy==2) or posy-self.posy==1:
+            return True
+        else:
+            return False
+
 
 class Rook(Piece):
     pass
@@ -38,8 +62,18 @@ class Rook(Piece):
         else:
             self.type = "R"
 
+    def getColor(self):
+        return self.color
+
     def name(self):
-        return print(f"[{self.type}]", end="")
+        return print(f"[{self.type},{self.color}]", end=" ")
+
+    def getType(self):
+        return "torre"
+
+    def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
+        return True
+
 
 class Bishop(Piece):
     pass
@@ -51,8 +85,18 @@ class Bishop(Piece):
         else:
             self.type = "B"
 
+    def getColor(self):
+        return self.color
+
     def name(self):
-        return print(f"[{self.type}]", end="")
+        return print(f"[{self.type},{self.color}]", end=" ")
+
+    def getType(self):
+        return "alfil"
+
+    def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
+        return True
+
 
 class Knight(Piece):
     pass
@@ -64,8 +108,18 @@ class Knight(Piece):
         else:
             self.type = "N"
 
+    def getColor(self):
+        return self.color
+
     def name(self):
-        return print(f"[{self.type}]", end="")
+        return print(f"[{self.type},{self.color}]", end=" ")
+
+    def getType(self):
+        return "caballo"
+
+    def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
+        return True
+
 
 class Queen(Piece):
     pass
@@ -77,8 +131,18 @@ class Queen(Piece):
         else:
             self.type = "Q"
 
+    def getColor(self):
+        return self.color
+
     def name(self):
-        return print(f"[{self.type}]", end="")
+        return print(f"[{self.type},{self.color}]", end=" ")
+
+    def getType(self):
+        return "dama"
+
+    def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
+        return True
+
 
 class King(Piece):
     pass
@@ -90,5 +154,14 @@ class King(Piece):
         else:
             self.type = "K"
 
+    def getColor(self):
+        return self.color
+
     def name(self):
-        return print(f"[{self.type}]", end="")
+        return print(f"[{self.type},{self.color}]", end=" ")
+
+    def getType(self):
+        return "rey"
+
+    def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
+        return True
