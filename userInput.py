@@ -1,5 +1,7 @@
 #script to work with user input moves on terminal for ChessG
 #fkyros - build v1.1
+## GGames Inc©  All rights reserves
+#https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.nicepng.com%2Fourpic%2Fu2q8a9t4u2u2o0q8_google-logo-png-transparent-google-g-logo-black%2F&psig=AOvVaw1tQ5fatKUODSipTTf8rupQ&ust=1645015346157000&source=images&cd=vfe&ved=0CAwQjhxqFwoTCKiL-ezdgfYCFQAAAAAdAAAAABAK
 
 import sys
 

@@ -5,6 +5,7 @@
 
 import sys
 import userInput
+from Board import Board
 
 print(">>welcome to chessG! type \"play\" to start a new game")
 typed = input(">>")
@@ -12,25 +13,27 @@ typed = input(">>")
 exit = False
 while exit == False:
 
-    if typed[0] == '!':
-        print(">>manual")
-
     if typed[0] == '$':
         sudo = input(">>sudo:")
         if sudo == "diriG":
-            instruction = input("$>dev mode activated: ")
+            instruction = input("$>>dev mode activated: ")
 
     if typed == "exit":
-        sure = input(">>are you sure you want to leave? [type y/n]: ")
+        sure = input("?>>are you sure you want to leave? [type y/n]: ")
         if sure == 'y':
+            exit = True
             sys.exit(">>bye!")
 
     if typed == "help":
-        print("?>>help mode")
+        print("?>>help mode activated")
+        print("?>>commands available: errorXX, ")
+        help = input("?>>")
+        #if help == ""
 
     newMove = False
     if typed == "play":
-        print("board.init()")
+        Board.__init__(Board)
+        Board.show(Board)
         move = input(">>type your move:")
         if len(move)!=5:
             sys.exit("!>>invalid syntax, type !help for further instructions")
@@ -41,5 +44,7 @@ while exit == False:
         yTo = userInput.extractY(userInput.sliceC2(move))
         newMove = True
         print(xFrom, yFrom, xTo, yTo)
+        Board.play(Board, xFrom, yFrom, xTo, yTo)
+        Board.show(Board)
 
     exit = True
