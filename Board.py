@@ -46,22 +46,24 @@ class Board:
         print("\n")
 
     def play(self, OrigX, OrigY, DestX, DestY):
-        if self.board[OrigX][OrigY] is None:
-            return print("La casilla de origen esta vacia, selecciones otra casilla")
-        PieceAux = self.board[OrigX][OrigY]
-        if self.board[DestX][DestY] is not None:
-            PieceAux2 = self.board[DestX][DestY]
+        if self.board[OrigY][OrigX] is None:
+            return print("The move isn't possible, there is not a piece in the Origin coordinates given")
+        PieceAux = self.board[OrigY][OrigX]
+        if self.board[DestY][DestX] is not None:
+            PieceAux2 = self.board[DestY][DestX]
             if PieceAux.color == PieceAux2.color:
-                return print("No se puede realizar este movimiento, Hay una pieza de tu color en la casilla destino")
-        if not PieceAux.canMove(DestX,DestY):
-            return print("El movimiento no es valido para una pieza del tipo:", {PieceAux.getType()})
-        self.board[DestX][DestY] = PieceAux
-        self.board[OrigX][OrigY] = None
-        PieceAux.setPos(DestX, DestY)
-        print("----------------JUGADA------------")
+                return print("The move ins't allowed, there is a piece of your team in the destiny coordinates given")
+        if not PieceAux.canMove(DestY ,DestX):
+            return print("This move isn't allowed for piece ", {PieceAux.getType()})
+
+        self.board[DestY][DestX] = PieceAux
+        self.board[OrigY][OrigX] = None
+        PieceAux.setPos(DestY, DestX)
+
+
 
 
 tablero = Board()
 tablero.show()
-tablero.play(1, 1, 1, 3)
+tablero.play(1,1 ,3 ,2 )
 tablero.show()
