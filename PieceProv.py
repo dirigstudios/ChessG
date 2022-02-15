@@ -37,16 +37,19 @@ class Pawn(Piece):
         return self.color
 
     def name(self):
-        return print(f"[{self.type},{self.color}]", end=" ")
+        return print(f"[ {self.type} ]", end=" ")
 
     def getType(self):
         return "peon"
 
     def setFirstMoveFalse(self):
-        self.firstmove=False
+        self.firstmove = False
 
     def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
-        if (self.firstmove and posy-self.posy==2) or posy-self.posy==1:
+        validMoves = []
+        if self.color == "B" and ((self.firstmove and posy - self.posy == 2) or self.posy - posy == 1):
+            return True
+        if self.color == "W" and ((self.firstmove and self.posy - posy == 2) or posy - self.posy == 1):
             return True
         else:
             return False
@@ -66,7 +69,7 @@ class Rook(Piece):
         return self.color
 
     def name(self):
-        return print(f"[{self.type},{self.color}]", end=" ")
+        return print(f"[ {self.type} ]", end=" ")
 
     def getType(self):
         return "torre"
@@ -89,7 +92,7 @@ class Bishop(Piece):
         return self.color
 
     def name(self):
-        return print(f"[{self.type},{self.color}]", end=" ")
+        return print(f"[ {self.type} ]", end=" ")
 
     def getType(self):
         return "alfil"
@@ -112,7 +115,7 @@ class Knight(Piece):
         return self.color
 
     def name(self):
-        return print(f"[{self.type},{self.color}]", end=" ")
+        return print(f"[ {self.type} ]", end=" ")
 
     def getType(self):
         return "caballo"
@@ -135,7 +138,7 @@ class Queen(Piece):
         return self.color
 
     def name(self):
-        return print(f"[{self.type},{self.color}]", end=" ")
+        return print(f"[ {self.type} ]", end=" ")
 
     def getType(self):
         return "dama"
@@ -158,7 +161,7 @@ class King(Piece):
         return self.color
 
     def name(self):
-        return print(f"[{self.type},{self.color}]", end=" ")
+        return print(f"[ {self.type} ]", end=" ")
 
     def getType(self):
         return "rey"
