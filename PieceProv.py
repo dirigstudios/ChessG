@@ -13,7 +13,7 @@ class Piece:
         self.posx = posx
 
     def __str__(self):
-        return f"[   ]"
+        return f"[ ]"
 
     def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
         return "esta pieza no existe"
@@ -37,7 +37,7 @@ class Pawn(Piece):
         return self.color
 
     def name(self):
-        return print(f"[ {self.type} ]", end=" ")
+        return print(f"[{self.type}]", end=" ")
 
     def getType(self):
         return "peon"
@@ -69,7 +69,7 @@ class Rook(Piece):
         return self.color
 
     def name(self):
-        return print(f"[ {self.type} ]", end=" ")
+        return print(f"[{self.type}]", end=" ")
 
     def getType(self):
         return "torre"
@@ -92,7 +92,7 @@ class Bishop(Piece):
         return self.color
 
     def name(self):
-        return print(f"[ {self.type} ]", end=" ")
+        return print(f"[{self.type}]", end=" ")
 
     def getType(self):
         return "alfil"
@@ -115,7 +115,7 @@ class Knight(Piece):
         return self.color
 
     def name(self):
-        return print(f"[ {self.type} ]", end=" ")
+        return print(f"[{self.type}]", end=" ")
 
     def getType(self):
         return "caballo"
@@ -138,7 +138,7 @@ class Queen(Piece):
         return self.color
 
     def name(self):
-        return print(f"[ {self.type} ]", end=" ")
+        return print(f"[{self.type}]", end=" ")
 
     def getType(self):
         return "dama"
@@ -161,7 +161,7 @@ class King(Piece):
         return self.color
 
     def name(self):
-        return print(f"[ {self.type} ]", end=" ")
+        return print(f"[{self.type}]", end=" ")
 
     def getType(self):
         return "rey"
