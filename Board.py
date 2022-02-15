@@ -36,14 +36,18 @@ class Board:
             y = y + 1
 
     def show(self):
+        n=1
         for i in self.board:
-            print("\n")
+            print(n, end=" ")
             for j in i:
                 if j is None:
-                    print("[   ]", end=" ")
+                    print("[ ]", end=" ")
                 else:
                     j.name()
-        print("\n")
+            print("")
+            n=n+1
+        print("   A   B   C   D   E   F   G   H ")
+        print("")
 
     def play(self, OrigX, OrigY, DestX, DestY):
         if self.board[OrigY][OrigX] is None:
@@ -65,5 +69,5 @@ class Board:
 
 tablero = Board()
 tablero.show()
-tablero.play(1,1 ,3 ,2 )
+tablero.play(1,1 ,2 ,2 )
 tablero.show()
