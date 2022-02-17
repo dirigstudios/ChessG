@@ -15,7 +15,7 @@ class Piece:
     def __str__(self):
         return f"[ ]"
 
-    def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
+    def canMove(self, posy, posx):  # cada pieza tendra su propia funcion de movimiento
         return "esta pieza no existe"
 
     def name(self):
@@ -27,7 +27,7 @@ class Pawn(Piece):
 
     def __init__(self, posx, posy, color):
         super().__init__(posx, posy, color)
-        if color == "B":
+        if not color:
             self.type = "p"
         else:
             self.type = "P"
@@ -45,14 +45,18 @@ class Pawn(Piece):
     def setFirstMoveFalse(self):
         self.firstmove = False
 
-    def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
-        validMoves = []
-        if self.color == "B" and ((self.firstmove and posy - self.posy == 2) or self.posy - posy == 1):
-            return True
-        if self.color == "W" and ((self.firstmove and self.posy - posy == 2) or posy - self.posy == 1):
-            return True
-        else:
-            return False
+    def canMove(self, posy, posx, pieceAt):  # cada pieza tendra su propia funcion de movimiento
+        MovesTo = []
+        if not self.color:
+            if self.firstmove and self.posy - posy == 2:
+                return True
+            elif self.posy - posy == 1:
+                return True
+        if self.color:
+            if self.firstmove and posy - self.posy == 2:
+                return True
+            elif posy - self.posy == 1:
+                return False
 
 
 class Rook(Piece):
@@ -60,7 +64,7 @@ class Rook(Piece):
 
     def __init__(self, posx, posy, color):
         super().__init__(posx, posy, color)
-        if color == "B":
+        if not color:
             self.type = "r"
         else:
             self.type = "R"
@@ -74,8 +78,10 @@ class Rook(Piece):
     def getType(self):
         return "torre"
 
-    def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
-        return True
+    def canMove(self, posy, posx):  # cada pieza tendra su propia funcion de movimiento
+        position = []
+        
+        return position
 
 
 class Bishop(Piece):
@@ -83,7 +89,7 @@ class Bishop(Piece):
 
     def __init__(self, posx, posy, color):
         super().__init__(posx, posy, color)
-        if color == "B":
+        if not color:
             self.type = "b"
         else:
             self.type = "B"
@@ -97,7 +103,7 @@ class Bishop(Piece):
     def getType(self):
         return "alfil"
 
-    def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
+    def canMove(self, posy, posx):  # cada pieza tendra su propia funcion de movimiento
         return True
 
 
@@ -106,7 +112,7 @@ class Knight(Piece):
 
     def __init__(self, posx, posy, color):
         super().__init__(posx, posy, color)
-        if color == "B":
+        if not color:
             self.type = "n"
         else:
             self.type = "N"
@@ -120,7 +126,7 @@ class Knight(Piece):
     def getType(self):
         return "caballo"
 
-    def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
+    def canMove(self, posy, posx):  # cada pieza tendra su propia funcion de movimiento
         return True
 
 
@@ -129,7 +135,7 @@ class Queen(Piece):
 
     def __init__(self, posx, posy, color):
         super().__init__(posx, posy, color)
-        if color == "B":
+        if not color:
             self.type = "q"
         else:
             self.type = "Q"
@@ -143,7 +149,7 @@ class Queen(Piece):
     def getType(self):
         return "dama"
 
-    def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
+    def canMove(self, posy, posx):  # cada pieza tendra su propia funcion de movimiento
         return True
 
 
@@ -152,7 +158,7 @@ class King(Piece):
 
     def __init__(self, posx, posy, color):
         super().__init__(posx, posy, color)
-        if color == "B":
+        if not color:
             self.type = "k"
         else:
             self.type = "K"
@@ -166,5 +172,5 @@ class King(Piece):
     def getType(self):
         return "rey"
 
-    def canMove(self, posx, posy):  # cada pieza tendra su propia funcion de movimiento
+    def canMove(self, posy, posx):  # cada pieza tendra su propia funcion de movimiento
         return True
