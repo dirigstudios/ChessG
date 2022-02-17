@@ -41,6 +41,7 @@ def extractX(c):
 #returns None if not given a number in char
 def extractY(c):
     try:
-        return int(c[1:2]) - 1
+        return 7 - (int(c[1:2]) - 1)
+        #subtracting 7 due to positions in the matrix
     except:
         return None

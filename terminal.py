@@ -7,6 +7,13 @@ import sys
 import userInput
 from Board import Board
 
+def leave():
+    sure = input("?>>are you sure you want to leave? [type y/n]: ")
+    if sure == 'y':
+        exit = True
+        sys.exit(">>bye!")
+
+print("DiriG © 2022 all rights deserved")
 print(">>welcome to chessG! type \"play\" to start a new game")
 typed = input(">>")
 
@@ -18,12 +25,6 @@ while exit == False:
         if sudo == "diriG":
             instruction = input("$>>dev mode activated: ")
 
-    if typed == "exit":
-        sure = input("?>>are you sure you want to leave? [type y/n]: ")
-        if sure == 'y':
-            exit = True
-            sys.exit(">>bye!")
-
     if typed == "help":
         print("?>>help mode activated")
         print("?>>commands available: errorXX, ")
@@ -32,9 +33,14 @@ while exit == False:
 
     newMove = False
     if typed == "play":
-        Board.__init__(Board)
-        Board.show(Board)
+        game = Board()
+        game.__init__()
+        game.show()
         move = input(">>type your move:")
+
+        if move == "exit":
+            leave()
+
         if len(move)!=5:
             sys.exit("!>>invalid syntax, type !help for further instructions")
 
@@ -44,7 +50,5 @@ while exit == False:
         yTo = userInput.extractY(userInput.sliceC2(move))
         newMove = True
         print(xFrom, yFrom, xTo, yTo)
-        Board.play(Board, xFrom, yFrom, xTo, yTo)
-        Board.show(Board)
-
-    exit = True
+        game.play(xFrom, yFrom, xTo, yTo)
+        game.show()
