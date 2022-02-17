@@ -1,13 +1,15 @@
 from PieceProv import Pawn, Rook, Bishop, Queen, King, Knight
+from coordinates import Coordinate
 
 
 class Board:
     def __init__(self):
-        self.board = [None] * 8
+        self.turn = True  # if turn==True, White plays, if turn==False, Black plays
+        self.board = [None] * 8  # Init of a 8x8 matrix, filled with "None" values.
         for i in range(8):
             self.board[i] = [None] * 8
-        x = 0
-        y = 0
+        x = 0  # Declare x a y, int values, that makes an easier declaration of the piecec
+        y = 0  # on the 8x8 matrix
         self.board[x][y] = Rook(y, x, True)
         self.board[x][7 - y] = Rook(y, x, True)
         self.board[7][y] = Rook(y, x, False)
@@ -34,11 +36,16 @@ class Board:
             self.board[x][y] = Pawn(y, x, True)
             self.board[7 - 1][y] = Pawn(y, x, False)
             y = y + 1
-        self.turn = True;      #if turn==True, White plays, if turn==False, Black plays
+
+    def setCoord(self, Coord, Piece):
+        self.board[Coord.getY()][Coord.getX()] = Piece
+
+    def getOnCoord(self, Coord):
+        return self.board[Coord.getY()][Coord.getX()]
 
     def showW(self):
         print("")
-        n=8
+        n = 8
         for i in reversed(self.board):
             print(n, end=" ")
             for j in reversed(i):
@@ -47,12 +54,12 @@ class Board:
                 else:
                     j.name()
             print("")
-            n=n-1
+            n = n - 1
         print("   A   B   C   D   E   F   G   H ")
 
     def showB(self):
         print("")
-        n=1
+        n = 1
         for i in self.board:
             print(n, end=" ")
             for j in i:
@@ -61,32 +68,62 @@ class Board:
                 else:
                     j.name()
             print("")
-            n=n+1
+            n = n + 1
         print("   H   G   F   E   D   C   B   A ")
 
-    def play(self, OrigX, OrigY, DestX, DestY):
-        if self.board[OrigY][OrigX] is None:
+    def play(self, coordinate_orig, coordinate_dest):
+        # 0º Condition: there is a piece in the Origin Coordinates
+        if self.getOnCoord(coordinate_orig) is None:
             return print("!>>invalid move: there is not a piece in the Origin coordinates given")
-        PieceAux = self.board[OrigY][OrigX]
-        if self.board[DestY][DestX] is not None:
-            PieceAux2 = self.board[DestY][DestX]
-            if PieceAux.color == PieceAux2.color:
+
+        # 1º Condition: The selected Piece is from your team
+        PieceAux = self.getOnCoord(coordinate_orig)
+        if PieceAux.getColor() != self.turn:
+            return print("!>>invalid move: The piece selected it's not from your team")
+
+        # 2º Condition: If there is a piece in the Destiny, its an enemy
+        if self.getOnCoord(coordinate_dest) is not None:
+            PieceAux2 = self.getOnCoord(coordinate_dest)
+            if PieceAux.getColor() == PieceAux2.color:
                 return print("!>>invalid move: there is a piece of your team in the destiny coordinates given")
-        if not PieceAux.canMove(DestY, DestX):
+
+        # 3º Condition: The move is allowed for the piece selected
+        if not PieceAux.canMove(2, 2):  # 3º Condition: The move is allowed for the piece selected
             return print("!>>invalid move: move not allowed for piece ", {PieceAux.getType()})
 
-        self.board[DestY][DestX] = PieceAux
-        self.board[OrigY][OrigX] = None
-        PieceAux.setPos(DestY, DestX)
+        # 4º Condition: There is not a Piece blocking your move (Not including Knight)
+
+        # ?º Condition: Your not king is not on check
+
+        # ?º Condition: The Piece movement isn't leaving your king in checkmate
+
+        self.setCoord(coordinate_dest, PieceAux)
+        self.setCoord(coordinate_orig, None)
+        # PieceAux.setPos(coordinate_dest)
         self.turn = not self.turn
 
-
-
+# Pruebas:
 
 tablero = Board()
 tablero.showW()
-tablero.play(1, 0, 2, 3 )
-tablero.showB()
-tablero.play(6, 7, 5, 5)
+tablero.play(Coordinate(4, 0), Coordinate(4, 6))
 tablero.showW()
-tablero.showB()
+tablero.play(Coordinate(4, 6), Coordinate(4, 7))
+tablero.showW()
+
+# ANTIGUO PLAY, POR SI LO NECESITO DESPUES
+# def play(self, OrigX, OrigY, DestX, DestY):
+#     if self.board[OrigY][OrigX] is None:
+#         return print("!>>invalid move: there is not a piece in the Origin coordinates given")
+#     PieceAux = self.board[OrigY][OrigX]
+#     if self.board[DestY][DestX] is not None:
+#         PieceAux2 = self.board[DestY][DestX]
+#         if PieceAux.color == PieceAux2.color:
+#             return print("!>>invalid move: there is a piece of your team in the destiny coordinates given")
+#     if not PieceAux.canMove(DestY, DestX):
+#         return print("!>>invalid move: move not allowed for piece ", {PieceAux.getType()})
+#
+#     self.board[DestY][DestX] = PieceAux
+#     self.board[OrigY][OrigX] = None
+#     PieceAux.setPos(DestY, DestX)
+#     self.turn = not self.turn
