@@ -87,13 +87,22 @@ class Board:
             if PieceAux.getColor() == PieceAux2.color:
                 return print("!>>invalid move: there is a piece of your team in the destiny coordinates given")
 
-        # 3º Condition: The move is allowed for the piece selected
-        if not PieceAux.canMove(2, 2):  # 3º Condition: The move is allowed for the piece selected
+        # 3º Condition: The move is allowed for the piece selected (Also treating pawn's special diagonal move)
+        if PieceAux is Pawn and PieceAux2 is not None:
+            PieceAux.canMove(2, 3, True)
+        elif not PieceAux.canMove(2, 2):
             return print("!>>invalid move: move not allowed for piece ", {PieceAux.getType()})
 
         # 4º Condition: There is not a Piece blocking your move (Not including Knight)
+        # valid = True
+        # for j in i:
+        #     if self.getOnCoord(j) is not None:
+        #         valid = False
+        #         break
+        # if valid is False:
+        #     return print("!>>invalid move: There is a piece blocking your move")
 
-        # ?º Condition: Your not king is not on check
+        # ?º Condition: Your king is on check (This does not mean you have to move only the king)
 
         # ?º Condition: The Piece movement isn't leaving your king in checkmate
 
@@ -106,7 +115,7 @@ class Board:
 
 tablero = Board()
 tablero.showW()
-tablero.play(Coordinate(4, 0), Coordinate(4, 6))
+tablero.play(Coordinate(4, 0), Coordinate(4, 3))
 tablero.showW()
 tablero.play(Coordinate(4, 6), Coordinate(4, 7))
 tablero.showW()
