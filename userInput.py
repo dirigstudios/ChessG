@@ -1,6 +1,6 @@
 #script to work with user input moves on terminal for ChessG
 #fkyros - build v1.1
-## GGames Inc©  All rights reserves
+## GGames Inc©  All rights reserved
 #https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.nicepng.com%2Fourpic%2Fu2q8a9t4u2u2o0q8_google-logo-png-transparent-google-g-logo-black%2F&psig=AOvVaw1tQ5fatKUODSipTTf8rupQ&ust=1645015346157000&source=images&cd=vfe&ved=0CAwQjhxqFwoTCKiL-ezdgfYCFQAAAAAdAAAAABAK
 
 import sys
@@ -12,16 +12,16 @@ import sys
 
 #given a proper input move, returns a string with the From coordinate
 def sliceC1(move):
-    if move[2]!=" ":
-        sys.exit("!>invalid syntax, type !help for further instructions")
+    # if move[2]!=" ":
+    #     return
 
     slice = move.split(" ")
     return slice[0]
 
 #given a proper input move, returns a string with the To coordinate
 def sliceC2(move):
-    if move[2]!=" ":
-        sys.exit("!>invalid syntax, type !help for further instructions")
+    # if move[2]!=" ":
+    #     return
     slice = move.split(" ")
     return slice[1]
 

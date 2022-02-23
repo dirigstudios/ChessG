@@ -43,6 +43,9 @@ class Board:
     def getOnCoord(self, Coord):
         return self.board[Coord.getY()][Coord.getX()]
 
+    def getTurn(self):
+        return self.turn
+
     def showW(self):
         print("")
         n = 8
