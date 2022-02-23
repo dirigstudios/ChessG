@@ -56,6 +56,7 @@ class Board:
             print("")
             n = n - 1
         print("   A   B   C   D   E   F   G   H ")
+        print("")
 
     def showB(self):
         print("")
@@ -70,6 +71,7 @@ class Board:
             print("")
             n = n + 1
         print("   H   G   F   E   D   C   B   A ")
+        print("")
 
     def play(self, coordinate_orig, coordinate_dest):
         # 0º Condition: there is a piece in the Origin Coordinates
@@ -113,12 +115,12 @@ class Board:
 
 # Pruebas:
 
-tablero = Board()
-tablero.showW()
-tablero.play(Coordinate(4, 0), Coordinate(4, 3))
-tablero.showW()
-tablero.play(Coordinate(4, 6), Coordinate(4, 7))
-tablero.showW()
+# tablero = Board()
+# tablero.showW()
+# tablero.play(Coordinate(4, 0), Coordinate(4, 3))
+# tablero.showW()
+# tablero.play(Coordinate(4, 6), Coordinate(4, 7))
+# tablero.showW()
 
 # ANTIGUO PLAY, POR SI LO NECESITO DESPUES
 # def play(self, OrigX, OrigY, DestX, DestY):
