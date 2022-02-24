@@ -97,25 +97,25 @@ class Board:
 
         # 3º Condition: The move is allowed for the piece selected (Also treating pawn's special diagonal move)
         if type(PieceAux) is Pawn and PieceAux2 is not None:
-            if PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY(), True) is []:
+            if not PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY(), True):
                 return print("!>>invalid move: move not allowed for piece ", {PieceAux.getType()})
         elif type(PieceAux) is Pawn and PieceAux2 is None:
-            if PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY(), False) is []:
+            if not PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY(), False) :
                 return print("!>>invalid move: move not allowed for piece ", {PieceAux.getType()})
-        elif PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY()) is []:
+        elif not PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY()) :
             return print("!>>invalid move: move not allowed for piece ", {PieceAux.getType()})
         else:
             positions = PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY())
 
         # 4º Condition: There is not a Piece blocking your move (Not including Knight)
-        # if PieceAux is not Knight:
-        #     valid = True
-        #     for j in positions:
-        #         if self.getOnCoord(j) is not None:
-        #             valid = False
-        #             break
-        #     if valid is False:
-        #         return print("!>>invalid move: There is a piece blocking your move")
+        if type(PieceAux) is not Knight:
+            valid = True
+            for j in positions:
+                if self.getOnCoord(j) is not None:
+                    valid = False
+                    break
+            if valid is False:
+                return print("!>>invalid move: There is a piece blocking your move")
 
         # ?º Condition: Your king is on check (This does not mean you have to move only the king)
 
