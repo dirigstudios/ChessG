@@ -5,13 +5,16 @@ from coordinates import Coordinate
 class Board:
     def __init__(self):
         self.turn = True  # if turn==True, White plays, if turn==False, Black plays
+        whiteKing = King(3, 0, True)
+        blackKing = King(3, 7, False)
+
         self.board = [None] * 8  # Init of a 8x8 matrix, filled with "None" values.
         for i in range(8):
             self.board[i] = [None] * 8
         x = 0  # Declare x a y, int values, that makes an easier declaration of the piecec
         y = 0  # on the 8x8 matrix
-        self.board[x][y] = Rook(y, x, True)
-        self.board[x][7 - y] = Rook(y, x, True)
+        self.board[x][y] = Rook(y, x, True)  # Initialization of every piece in their ->
+        self.board[x][7 - y] = Rook(y, x, True)  # -> respective position at the start of the game
         self.board[7][y] = Rook(y, x, False)
         self.board[7][7 - y] = Rook(y, x, False)
         y = y + 1
@@ -32,6 +35,8 @@ class Board:
         self.board[7][4] = King(y, x, False)
         y = 0
         x = 1
+        # Loop to make easier the initialization of 16 Pawns from both teams, setting their
+        # y coordinate still and adding 1 to x in every iteration
         while y != 8:
             self.board[x][y] = Pawn(y, x, True)
             self.board[7 - 1][y] = Pawn(y, x, False)
@@ -43,7 +48,10 @@ class Board:
     def getOnCoord(self, Coord):
         return self.board[Coord.getY()][Coord.getX()]
 
-    def showW(self):
+    def getTurn(self):
+        return self.turn
+
+    def showW(self):  # Prints Board in the point of view of the White team
         print("")
         n = 8
         for i in reversed(self.board):
@@ -57,7 +65,7 @@ class Board:
             n = n - 1
         print("   A   B   C   D   E   F   G   H ")
 
-    def showB(self):
+    def showB(self):  # Prints Board in the point of view of the Black team
         print("")
         n = 1
         for i in self.board:
@@ -94,22 +102,29 @@ class Board:
             return print("!>>invalid move: move not allowed for piece ", {PieceAux.getType()})
 
         # 4º Condition: There is not a Piece blocking your move (Not including Knight)
-        # valid = True
-        # for j in i:
-        #     if self.getOnCoord(j) is not None:
-        #         valid = False
-        #         break
-        # if valid is False:
-        #     return print("!>>invalid move: There is a piece blocking your move")
+        # if PieceAux is not Knight:
+        #     valid = True
+        #     for j in i:
+        #         if self.getOnCoord(j) is not None:
+        #             valid = False
+        #             break
+        #     if valid is False:
+        #         return print("!>>invalid move: There is a piece blocking your move")
 
         # ?º Condition: Your king is on check (This does not mean you have to move only the king)
 
         # ?º Condition: The Piece movement isn't leaving your king in checkmate
 
+        # If every condition is fulfilled, the move gets to be done
         self.setCoord(coordinate_dest, PieceAux)
         self.setCoord(coordinate_orig, None)
         # PieceAux.setPos(coordinate_dest)
+        # Once the move is done, we need to check if the enemy King is on check
+
         self.turn = not self.turn
+
+        # Aom CalV0
+
 
 # Pruebas:
 
