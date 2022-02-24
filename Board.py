@@ -43,7 +43,11 @@ class Board:
             x = x + 1
 
     def setCoord(self, Coord, Piece):
-        self.board[Coord.getY()][Coord.getX()] = Piece
+        if Piece is not None:
+            Piece.setPos(Coord.getX(), Coord.getY())
+            self.board[Coord.getY()][Coord.getX()] = Piece
+        if Piece is None:
+            self.board[Coord.getY()][Coord.getX()] = Piece
 
     def getOnCoord(self, Coord):
         return self.board[Coord.getY()][Coord.getX()]
@@ -109,7 +113,7 @@ class Board:
         else:
             positions = PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY())
 
-        # 4º Condition: There is not a Piece blocking your move (Not including Knight)
+        # 4º Condition: There is not a Piece blocking your move (Not including Knight) ARREGLOS NECESARIOS!!!!!!!!!!!!
         if type(PieceAux) is not Knight:
             valid = True
             for j in positions:
