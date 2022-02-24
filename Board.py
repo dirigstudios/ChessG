@@ -13,34 +13,34 @@ class Board:
             self.board[i] = [None] * 8
         x = 0  # Declare x a y, int values, that makes an easier declaration of the piecec
         y = 0  # on the 8x8 matrix
-        self.board[x][y] = Rook(y, x, False)  # Initialization of every piece in their ->
-        self.board[x][7 - y] = Rook(y, x, False)  # -> respective position at the start of the game
-        self.board[7][y] = Rook(y, x, True)
-        self.board[7][7 - y] = Rook(y, x, True)
+        self.board[0][0] = Rook(0, 0, False)  # Initialization of every piece in their ->
+        self.board[0][7] = Rook(7, 0, False)  # -> respective position at the start of the game
+        self.board[7][7] = Rook(7, 7, True)
+        self.board[7][0] = Rook(0, 7, True)
+
+        self.board[0][1] = Knight(1, 0, False)
+        self.board[0][6] = Knight(6, 0, False)
+        self.board[7][1] = Knight(1, 7, True)
+        self.board[7][6] = Knight(6, 7, True)
         y = y + 1
-        self.board[x][y] = Knight(y, x, False)
-        self.board[x][7 - y] = Knight(y, x, False)
-        self.board[7][y] = Knight(y, x, True)
-        self.board[7][7 - y] = Knight(y, x, True)
+        self.board[0][2] = Bishop(2, 0, False)
+        self.board[0][5] = Bishop(5, 0, False)
+        self.board[7][2] = Bishop(2, 7, True)
+        self.board[7][5] = Bishop(5, 7, True)
         y = y + 1
-        self.board[x][y] = Bishop(y, x, False)
-        self.board[x][7 - y] = Bishop(y, x, False)
-        self.board[7][y] = Bishop(y, x, True)
-        self.board[7][7 - y] = Bishop(y, x, True)
+        self.board[0][3] = Queen(3, 0, False)
+        self.board[7][3] = Queen(3, 7, True)
         y = y + 1
-        self.board[x][y] = Queen(y, x, False)
-        self.board[7][3] = Queen(y, x, True)
-        y = y + 1
-        self.board[x][y] = King(y, x, False)
-        self.board[7][4] = King(y, x, True)
-        y = 0
-        x = 1
+        self.board[0][4] = King(4, 0, False)
+        self.board[7][4] = King(4, 7, True)
+        x=0
+        y=7
         # Loop to make easier the initialization of 16 Pawns from both teams, setting their
         # y coordinate still and adding 1 to x in every iteration
-        while y != 8:
-            self.board[x][y] = Pawn(y, x, False)
-            self.board[7 - 1][y] = Pawn(y, x, True)
-            y = y + 1
+        while x != 8:
+            self.board[1][x] = Pawn(x, 0, False)
+            self.board[6][x] = Pawn(x, 7, True)
+            x = x + 1
 
     def setCoord(self, Coord, Piece):
         self.board[Coord.getY()][Coord.getX()] = Piece
@@ -63,7 +63,7 @@ class Board:
                     j.name()
             print("")
             n = n + 1
-        print("   H   G   F   E   D   C   B   A ")
+        print("   H   G   F   E   D   C   B   A  \n")
 
     def showW(self):  # Prints Board in the point of view of the Black team
         print("")
@@ -77,7 +77,7 @@ class Board:
                     j.name()
             print("")
             n = n - 1
-        print("   A   B   C   D   E   F   G   H ")
+        print("   A   B   C   D   E   F   G   H  \n")
 
     def play(self, coordinate_orig, coordinate_dest):
         # 0º Condition: there is a piece in the Origin Coordinates
@@ -97,10 +97,12 @@ class Board:
 
         # 3º Condition: The move is allowed for the piece selected (Also treating pawn's special diagonal move)
         if type(PieceAux) is Pawn and PieceAux2 is not None:
-            if not PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY(), True):
+            positions = PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY(), True)
+            if not positions:
                 return print("!>>invalid move: move not allowed for piece ", {PieceAux.getType()})
         elif type(PieceAux) is Pawn and PieceAux2 is None:
-            if not PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY(), False) :
+            positions = PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY(), False)
+            if not positions:
                 return print("!>>invalid move: move not allowed for piece ", {PieceAux.getType()})
         elif not PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY()) :
             return print("!>>invalid move: move not allowed for piece ", {PieceAux.getType()})
@@ -121,6 +123,8 @@ class Board:
 
         # ?º Condition: The Piece movement isn't leaving your king in checkmate
 
+        # ?º Condition: The king isnt in CheckMate
+
         # If every condition is fulfilled, the move gets to be done
         self.setCoord(coordinate_dest, PieceAux)
         self.setCoord(coordinate_orig, None)
@@ -131,6 +135,9 @@ class Board:
 
         # Aom CalV0
 
+        def sudoPlay(self, coordinate_orig, coordinate_dest):
+            self.setCoord(coordinate_dest, PieceAux)
+            self.setCoord(coordinate_orig, None)
 
 # Pruebas:
 
