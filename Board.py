@@ -38,8 +38,8 @@ class Board:
         # Loop to make easier the initialization of 16 Pawns from both teams, setting their
         # y coordinate still and adding 1 to x in every iteration
         while x != 8:
-            self.board[1][x] = Pawn(x, 0, False)
-            self.board[6][x] = Pawn(x, 7, True)
+            self.board[1][x] = Pawn(x, 1, False)
+            self.board[6][x] = Pawn(x, 6, True)
             x = x + 1
 
     def setCoord(self, Coord, Piece):
