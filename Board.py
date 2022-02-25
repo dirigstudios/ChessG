@@ -5,8 +5,8 @@ from coordinates import Coordinate
 class Board:
     def __init__(self):
         self.turn = True  # if turn==True, White plays, if turn==False, Black plays
-        whiteKing = King(3, 0, True)
-        blackKing = King(3, 7, False)
+        self.whiteKing = King(3, 0, True)
+        self.blackKing = King(3, 7, False)
 
         self.board = [None] * 8  # Init of a 8x8 matrix, filled with "None" values.
         for i in range(8):
@@ -33,8 +33,8 @@ class Board:
         y = y + 1
         self.board[0][4] = King(4, 0, False)
         self.board[7][4] = King(4, 7, True)
-        x=0
-        y=7
+        x = 0
+        y = 7
         # Loop to make easier the initialization of 16 Pawns from both teams, setting their
         # y coordinate still and adding 1 to x in every iteration
         while x != 8:
@@ -51,6 +51,9 @@ class Board:
 
     def getOnCoord(self, Coord):
         return self.board[Coord.getY()][Coord.getX()]
+
+    def compareCoord(self, Coord1, Coord2):
+        return Coord1.getX() == Coord2.getX() and Coord1.getY() == Coord2.getY()
 
     def getTurn(self):
         return self.turn
@@ -103,13 +106,13 @@ class Board:
         if type(PieceAux) is Pawn and PieceAux2 is not None:
             positions = PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY(), True)
             if not positions:
-                return print("!>>invalid move: move not allowed for piece ", {PieceAux.getType()})
+                return print("!>>invalid move: move not allowed for piece #1 ", {PieceAux.getType()})
         elif type(PieceAux) is Pawn and PieceAux2 is None:
             positions = PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY(), False)
             if not positions:
-                return print("!>>invalid move: move not allowed for piece ", {PieceAux.getType()})
-        elif not PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY()) :
-            return print("!>>invalid move: move not allowed for piece ", {PieceAux.getType()})
+                return print("!>>invalid move: move not allowed for piece #2 ", {PieceAux.getType()})
+        elif not PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY()):
+            return print("!>>invalid move: move not allowed for piece #3 ", {PieceAux.getType()})
         else:
             positions = PieceAux.canMove(coordinate_dest.getX(), coordinate_dest.getY())
 
@@ -117,7 +120,7 @@ class Board:
         if type(PieceAux) is not Knight:
             valid = True
             for j in positions:
-                if self.getOnCoord(j) is not None:
+                if not self.compareCoord(j, coordinate_dest) and not self.compareCoord(j, coordinate_orig) and self.getOnCoord(j) is not None:
                     valid = False
                     break
             if valid is False:
@@ -132,18 +135,30 @@ class Board:
         # If every condition is fulfilled, the move gets to be done
         self.setCoord(coordinate_dest, PieceAux)
         self.setCoord(coordinate_orig, None)
-        # PieceAux.setPos(coordinate_dest)
+        PieceAux.setPos(coordinate_dest.getX(), coordinate_dest.getY())
+        if type(PieceAux) is King:
+            if self.turn is True:
+                self.whiteKing.setPos(coordinate_dest)
+            else:
+                self.blackKing.setPos(coordinate_dest)
+
         # Once the move is done, we need to check if the enemy King is on check
+
 
         self.turn = not self.turn
 
-        # Aom CalV0
+    def sudoPlay(self, coordinate_orig, coordinate_dest):
+        self.setCoord(coordinate_dest, self.getOnCoord(coordinate_orig))
+        self.setCoord(coordinate_orig, None)
 
-        def sudoPlay(self, coordinate_orig, coordinate_dest):
-            self.setCoord(coordinate_dest, PieceAux)
-            self.setCoord(coordinate_orig, None)
+    def sudoKill(self, coordinateKill):
+        self.setCoord(coordinateKill, None)
+
 
 # Pruebas:
+board = Board()
+
+print(board.getOnCoord(Coordinate(0,4)))
 
 # Prueba = Pawn(0,0,True)
 # print(type(Prueba) is Pawn)
@@ -155,19 +170,3 @@ class Board:
 # tablero.play(Coordinate(4, 6), Coordinate(4, 7))
 # tablero.showW()
 
-# ANTIGUO PLAY, POR SI LO NECESITO DESPUES
-# def play(self, OrigX, OrigY, DestX, DestY):
-#     if self.board[OrigY][OrigX] is None:
-#         return print("!>>invalid move: there is not a piece in the Origin coordinates given")
-#     PieceAux = self.board[OrigY][OrigX]
-#     if self.board[DestY][DestX] is not None:
-#         PieceAux2 = self.board[DestY][DestX]
-#         if PieceAux.color == PieceAux2.color:
-#             return print("!>>invalid move: there is a piece of your team in the destiny coordinates given")
-#     if not PieceAux.canMove(DestY, DestX):
-#         return print("!>>invalid move: move not allowed for piece ", {PieceAux.getType()})
-#
-#     self.board[DestY][DestX] = PieceAux
-#     self.board[OrigY][OrigX] = None
-#     PieceAux.setPos(DestY, DestX)
-#     self.turn = not self.turn

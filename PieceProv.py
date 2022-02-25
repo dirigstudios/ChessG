@@ -54,13 +54,13 @@ class Pawn(Piece):
             # Check if this pawn is black or white
             if not self.color: # If its black the movement is inverted
                 if self.firstmove and posy - self.posy == 2:
-                    return [Coordinate(posx, posy + 1), Coordinate(posx, posy)]
-                elif self.posy - posy == 1:
+                    return [Coordinate(posx, self.posy + 1), Coordinate(posx, self.posy+2)]
+                elif posy - self.posy == 1:
                     return [Coordinate(posx, posy)]
             if self.color: # If its white the movement is normal
                 if self.firstmove and self.posy - posy == 2:
-                    return [Coordinate(posx, posy - 1), Coordinate(posx, posy)]
-                elif posy - self.posy == 1:
+                    return [Coordinate(posx, self.posy - 1), Coordinate(posx, self.posy-2)]
+                elif self.posy - posy == 1:
                     return [Coordinate(posx, posy)]
         else: # If the movement is to capture a piece we check if the movement is valid
             if not self.color:
