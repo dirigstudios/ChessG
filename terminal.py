@@ -90,7 +90,7 @@ class Menu:
                 cTo = Coordinate(xTo, yTo)
 
                 self.game.play(cFrom, cTo)
-                self.game.showW() if self.game.getTurn() else game.showB()
+                self.game.showW() if self.game.getTurn() else self.game.showB()
             else:
                 print(self.error + "invalid move syntax (#play2p)" + self.helpM)
                 # self.clear(self)

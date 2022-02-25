@@ -241,7 +241,7 @@ class Queen(Piece):
                 positions.append(Coordinate(self.posx + (i * multiplicadorx), self.posy + (i * multiplicadory)))
                 cuadrantey = cuadrantey - 1
                 i = i + 1
-        auxcoord
+        auxcoord=0
         if self.posy - posy == 0:
             if self.posx - posx > 0:
                 auxcoord = posx
