@@ -14,3 +14,6 @@ class Coordinate:
 
     def setY(self,y):
         self.y = y
+
+    def toString(self):
+        return "(" + self.x + ", " + self.y + ")"

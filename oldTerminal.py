@@ -54,3 +54,53 @@ while typed != "exit":
 
     else:
         print("please type a valid option, type !help for further instructions")
+
+#old loop
+# selected = self.translator(self, input(self.prompt))
+#
+# if selected >= 1 and selected<len(self.options):
+#     print("ole")
+#
+# elif selected == 0:
+#     self.leave()
+# elif selected == 6:
+#     self.clear()
+
+# def translator(self, typed):
+#     if typed == "exit":
+#         return 0
+#     elif typed == "help":
+#         return 1
+#     elif typed == "play":
+#         return 2
+#     elif typed == "$":
+#         return 3
+#     elif typed == "save":
+#         return 4
+#     elif typed == "play against AI":
+#         return 5
+#     elif typed == "clear":
+#         return 6
+
+    # def loop(self):
+    #     print(self.copyright,self.start)
+    #     while self.terminator:
+    #         try:
+    #             selected = input(self.prompt)
+    #             if selected == "DiriG":
+    #                 print("nice")
+    #             elif selected == "clear":
+    #                 self.clear()
+    #             elif selected == "help":
+    #                 self.help()
+    #             elif selected == "exit": #ERROR???
+    #                 self.leave()
+    #             elif selected == "play":
+    #                 self.play2p()
+    #             else:
+    #                 print(self.error + "please type a valid option (#else)" + self.helpM)
+    #
+    #         except KeyboardInterrupt:
+    #             break
+    #         except:
+    #             print(self.copyright)
