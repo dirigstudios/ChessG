@@ -15,5 +15,5 @@ class Coordinate:
     def setY(self,y):
         self.y = y
 
-    def __str__(self):
-        return f"[{self.x},{self.y}]"
+    def toString(self):
+        return "(" + self.x + ", " + self.y + ")"

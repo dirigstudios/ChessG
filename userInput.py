@@ -45,3 +45,10 @@ def extractY(c):
         #subtracting 7 due to positions in the matrix
     except:
         return None
+
+# move = "b1 b3" #1,7 / 1,5
+# xFrom = extractX(sliceC1(move))
+# yFrom = extractY(sliceC1(move))
+# xTo = extractX(sliceC2(move))
+# yTo = extractY(sliceC2(move))
+# print(xFrom, yFrom, xTo, yTo)

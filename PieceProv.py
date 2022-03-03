@@ -53,14 +53,14 @@ class Pawn(Piece):
         if not pieceAt:
             # Check if this pawn is black or white
             if not self.color: # If its black the movement is inverted
-                if self.firstmove and self.posy - posy == 2:
-                    return [Coordinate(posx, posy + 1), Coordinate(posx, posy)]
-                elif self.posy - posy == 1:
+                if self.firstmove and posy - self.posy == 2:
+                    return [Coordinate(posx, self.posy + 1), Coordinate(posx, self.posy+2)]
+                elif posy - self.posy == 1:
                     return [Coordinate(posx, posy)]
             if self.color: # If its white the movement is normal
-                if self.firstmove and posy - self.posy == 2:
-                    return [Coordinate(posx, posy - 1), Coordinate(posx, posy)]
-                elif posy - self.posy == 1:
+                if self.firstmove and self.posy - posy == 2:
+                    return [Coordinate(posx, self.posy - 1), Coordinate(posx, self.posy-2)]
+                elif self.posy - posy == 1:
                     return [Coordinate(posx, posy)]
         else: # If the movement is to capture a piece we check if the movement is valid
             if not self.color:
@@ -238,10 +238,10 @@ class Queen(Piece):
         if cuadrantex == cuadrantey:
             i = 0
             while cuadrantey >= 0:
-                positions.append(Coordinate(self.posx + (i * multiplicadorx), self.posy + (i * multiplicadory)))
+                position.append(Coordinate(self.posx + (i * multiplicadorx), self.posy + (i * multiplicadory)))
                 cuadrantey = cuadrantey - 1
                 i = i + 1
-        auxcoord=0
+        auxcoord = 0
         if self.posy - posy == 0:
             if self.posx - posx > 0:
                 auxcoord = posx

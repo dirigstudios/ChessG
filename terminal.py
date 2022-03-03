@@ -2,7 +2,7 @@
 #fkyros - build v1.2
 
 ##to-do: developer mode, help mode, (if sth typed wrong, keep the program running), show available options,
-# show board correspondiente, 
+# show board correspondiente,
 # problemas si el input es "bueno" a priori pero en verdad no,
 # meter las opciones del menu mientras se esta jugando
 
@@ -19,15 +19,17 @@ CLEAN = "clear" if sys.platform.startswith("linux") else "cls"
 
 class Menu:
 
-    copyright = "DiriG © 2022 all rights deserved"
+    copyright = "DiriG Studios © 2022 all rights deserved"
     start = ">>welcome to chessG! type \"play\" to start a new game"
     prompt = ">"
     helpM = ", type \"help\" for further instructions"
     error = "!>>error: "
 
     def __init__(self):
-        self.terminator = True
-        self.options = [self.leave, self.help, self.play2p, self.devmode, self.saveGame, self.playAI]
+        self.sudo = False
+        self.terminal = True
+        self.playing = False
+        self.options = [self.leave, self.help, self.play2p, self.sudoMode, self.saveGame, self.playAI]
         self.game = Board()
         self.game.__init__()
         print(self.start)
@@ -36,7 +38,7 @@ class Menu:
     def loop(self):
         print(self.copyright)
         try:
-            while self.terminator:
+            while self.terminal:
                 selected = input(self.prompt)
                 if selected == "DiriG":
                     print("nice")
@@ -44,18 +46,22 @@ class Menu:
                     self.clear(self)
                 elif selected == "help":
                     self.help(self)
-                elif selected == "exit": #ERROR???
+                elif selected == "exit":
                     self.leave(self)
                 elif selected == "play":
                     self.play2p(self)
                 else:
                     print(self.error + "please type a valid option (#else)" + self.helpM)
         except KeyboardInterrupt:
-            sys.exit("\n" + self.error + "task killed (Ctrl C)")
+            sys.exit("\n" + self.error + "terminal chessG got killed")
 
+    def clear(self):
+        os.system(CLEAN)
+        print(self.copyright)
+        print(self.start)
 
     def leave(self):
-        self.terminator = False
+        self.terminal = False
         # sys.exit(">>bye!")
         sure = input("?>>are you sure you want to leave? [type y/n]: ")
         if sure == 'y':
@@ -63,16 +69,23 @@ class Menu:
             print(self.copyright)
             #raise KeyboardInterrupt()
         elif sure == "n":
-            self.terminator = True
-            self.loop(self)
+            if self.playing:
+                self.play2p(self)
+            else:
+                self.terminal = True
+                self.loop(self)
         else:
             print(self.error + "please type a valid option (#leave)" + self.helpM)
 
+    def showBoard(self):
+        return self.game.showW() if self.game.getTurn() else self.game.showB()
+
     def play2p(self):
         print(">>starting a Player VS Player game! white opens (uppercase pieces)")
-        self.terminator = False
-        self.game.showW() #starting with white pieces
-        while not self.terminator:
+        self.terminal = False
+        self.playing = True
+        self.showBoard(self) #starting with white pieces
+        while not self.terminal:
             move = input(">>type your move:")
 
             if len(move)==5 and move[2]==" ":
@@ -91,73 +104,85 @@ class Menu:
 
                 self.game.play(cFrom, cTo)
                 self.game.showW() if self.game.getTurn() else self.game.showB()
+            elif move == "clear":
+                self.clear(self)
+                self.showBoard(self)
+            elif move == "help":
+                self.help(self)
+            elif move == "exit":
+                self.leave(self)
+            elif move == "show":
+                self.showBoard(self)
+            elif move == "$":
+                self.sudoMode(self)
             else:
                 print(self.error + "invalid move syntax (#play2p)" + self.helpM)
                 # self.clear(self)
 
     def help(self):
         print("wip")
-    def devmode(self):
-        print("wip")
+
+    def sudoMode(self):
+        #self.playing = False
+        self.sudo = True
+        sudot = input("$>")
+        if sudot == "dirig22":
+            self.clear(self)
+            self.showBoard(self)
+            print("$>>sudo mode activated")
+            sudott = input("$>")
+
+            while self.sudo:
+                if len(sudott)==5 and sudott[2]==" ": #moving whatever piece mode
+                    xFrom = userInput.extractX(userInput.sliceC1(sudott))
+                    yFrom = userInput.extractY(userInput.sliceC1(sudott))
+                    xTo = userInput.extractX(userInput.sliceC2(sudott))
+                    yTo = userInput.extractY(userInput.sliceC2(sudott))
+
+                    if xFrom == None or yFrom == None or xTo == None or yTo == None:
+                        print("illo escribe bien las malditas coordenadas")
+
+                    cFrom = Coordinate(xFrom, yFrom)
+                    cTo = Coordinate(xTo, yTo)
+                    self.game.sudoPlay(cFrom, cTo)
+
+                    self.clear(self)
+                    self.showBoard(self)
+                    self.sudo = False           #ERROR: MAKING IT UNTIL LEAVING
+                    return
+
+                elif len(sudott)==2: #killing pieces mode
+                    xFrom = userInput.extractX(userInput.sliceC1(sudott))
+                    yFrom = userInput.extractY(userInput.sliceC1(sudott))
+                    if xFrom == None or yFrom == None:
+                        print("illo escribe bien las malditas coordenadas")
+                    cFrom = Coordinate(xFrom, yFrom)
+                    self.game.sudoKill(cFrom)
+
+                    self.clear(self)
+                    self.showBoard(self)
+                    self.sudo = False           #ERROR: MAKING IT UNTIL LEAVING
+                    return
+
+                elif sudott == "leave":
+                    self.clear(self)
+                    self.showBoard(self)
+                    self.sudo = False
+                    return
+                else:
+                    self.clear(self)
+                    self.showBoard(self)
+                    return
+        else:
+            self.clear(self)
+            self.showBoard(self)
+            return
+
     def saveGame(self):
         print("wip")
     def playAI(self):
         print("wip")
-
-    def clear(self):
-        os.system(CLEAN)
-        print(self.copyright)
-        print(self.start)
+    def options(self):
+        print("wip")
 
 Menu.__init__(Menu)
-
-
-#old loop
-# selected = self.translator(self, input(self.prompt))
-#
-# if selected >= 1 and selected<len(self.options):
-#     print("ole")
-#
-# elif selected == 0:
-#     self.leave()
-# elif selected == 6:
-#     self.clear()
-
-# def translator(self, typed):
-#     if typed == "exit":
-#         return 0
-#     elif typed == "help":
-#         return 1
-#     elif typed == "play":
-#         return 2
-#     elif typed == "$":
-#         return 3
-#     elif typed == "save":
-#         return 4
-#     elif typed == "play against AI":
-#         return 5
-#     elif typed == "clear":
-#         return 6
-
-    # def loop(self):
-    #     print(self.copyright,self.start)
-    #     while self.terminator:
-    #         try:
-    #             selected = input(self.prompt)
-    #             if selected == "DiriG":
-    #                 print("nice")
-    #             elif selected == "clear":
-    #                 self.clear()
-    #             elif selected == "help":
-    #                 self.help()
-    #             elif selected == "exit": #ERROR???
-    #                 self.leave()
-    #             elif selected == "play":
-    #                 self.play2p()
-    #             else:
-    #                 print(self.error + "please type a valid option (#else)" + self.helpM)
-    #
-    #         except KeyboardInterrupt:
-    #             break
-    #         except:
-    #             print(self.copyright)
