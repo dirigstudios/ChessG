@@ -120,7 +120,8 @@ class Board:
         if type(PieceAux) is not Knight:
             valid = True
             for j in positions:
-                if not self.compareCoord(j, coordinate_dest) and not self.compareCoord(j, coordinate_orig) and self.getOnCoord(j) is not None:
+                if not self.compareCoord(j, coordinate_dest) and not self.compareCoord(j, coordinate_orig) \
+                        and self.getOnCoord(j) is not None:
                     valid = False
                     break
             if valid is False:
@@ -133,26 +134,99 @@ class Board:
         # ?º Condition: The king isnt in CheckMate
 
         # If every condition is fulfilled, the move gets to be done
+        pieceRemoved = self.getOnCoord(coordinate_dest)  # Save eaten piece in case the move leaves your king on check
         self.setCoord(coordinate_dest, PieceAux)
         self.setCoord(coordinate_orig, None)
-        PieceAux.setPos(coordinate_dest.getX(), coordinate_dest.getY())
+        # PieceAux.setPos(coordinate_dest.getX(), coordinate_dest.getY())
         if type(PieceAux) is King:
             if self.turn is True:
                 self.whiteKing.setPos(coordinate_dest)
             else:
                 self.blackKing.setPos(coordinate_dest)
 
-        # Once the move is done, we need to check if the enemy King is on check,
+        # Once the move is done, we need to check if your king is on check
 
+        if self.turn is True and self.check(self.whiteKing):
+            self.setCoord(coordinate_orig, PieceAux)
+            self.setCoord(coordinate_dest, pieceRemoved)
+            return print("!>>invalid move: Your king is left on check with this movement")
+        elif self.check(self.blackKing):
+            self.setCoord(coordinate_orig, PieceAux)
+            self.setCoord(coordinate_dest, pieceRemoved)
+            return print("!>>invalid move: Your king is left on check with this movement")
 
         self.turn = not self.turn
 
     # Given a King of certain team, returns if it is on Check, our method is going to be check every line from which the
     # king can be threatened,
-    def isKingOnCheck(self, king):
-        x=king.getPos
+    def check(self, king):
+        x = king.getX()
+        y = king.getY()
+        # loop for checking every piece on King's Y axis
+        i = 1
+        blockYpos = False
+        blocYneg = False
+        while i <= 7:
+            yplus = y + i
+            yminus = y - i
+            if 0 <= yplus <= 7 and blockYpos:  # checking if valid values on board
+                piece = self.getOnCoord(Coordinate(x, yplus))
+                if type(piece) is Queen or piece is Rook and piece.color() is not self.turn:
+                    return True
 
+            if 0 <= yminus <= 7 and blocYneg:
+                piece = self.getOnCoord(Coordinate(x, yminus))
+                if type(piece) is Queen or piece is Rook and piece.color() is not self.turn:
+                    return True
+            i += 1
+        # loop for checking every piece on King's X axis
+        i = 1
+        while i <= 7:
+            xplus = x + i
+            xminus = x - i
+            if 0 <= xplus <= 7:  # checking if valid values on board
+                piece = self.getOnCoord(Coordinate(xplus, y))
+                if type(piece) is Queen or piece is Rook and piece.color() is not self.turn:
+                    return True
+            if 0 <= xminus <= 7:
+                piece = self.getOnCoord(Coordinate(xminus, y))
+                if type(piece) is Queen or piece is Rook and piece.color() is not self.turn:
+                    return True
+            i += 1
+        # loop for checking every king's diagonal
+        i = 1
+        while i <= 7:
+            xplus = x + i
+            xminus = x - i
+            yplus = y + i
+            yminus = y - i
+            if 0 <= xplus <= 7 and 0 <= yplus <= 7:
+                piece = self.getOnCoord(Coordinate(xplus, yplus))
+                if type(piece) is Bishop or piece is Queen and piece.color() is not self.turn:
+                    return True
+                elif type(piece) is Pawn and xplus - x == 1 and yplus - y == 1 and piece.color() is not self.turn:
+                    return True
+                piece = self.getOnCoord(Coordinate(xplus, yminus))
+                if type(piece) is Bishop or piece is Queen and piece.color() is not self.turn:
+                    return True
+                elif type(piece) is Pawn and xplus - x == 1 and y - yminus == 1 and piece.color() is not self.turn:
+                    return True
+                piece = self.getOnCoord(Coordinate(xminus, yplus))
+                if type(piece) is Bishop or piece is Queen and piece.color() is not self.turn:
+                    return True
+                elif type(piece) is Pawn and x - xminus == 1 and yplus - y == 1 and piece.color() is not self.turn:
+                    return True
+                piece = self.getOnCoord(Coordinate(xminus, yminus))
+                if type(piece) is Bishop or piece is Queen and piece.color() is not self.turn:
+                    return True
+                elif type(piece) is Pawn and x - xminus == 1 and y - yminus == 1 and piece.color() is not self.turn:
+                    return True
+            i += 1
         return False
+
+    # def checksDiagonal(self,piece):
+
+    # def checksNonDiagonal(self,piece):
 
     # Sudo/God Functions, so Gabri is happy ;)
     def sudoPlay(self, coordinate_orig, coordinate_dest):
@@ -162,18 +236,4 @@ class Board:
     def sudoKill(self, coordinateKill):
         self.setCoord(coordinateKill, None)
 
-
-# Pruebas:
-board = Board()
-
-print(board.getOnCoord(Coordinate(0,4)))
-
-# Prueba = Pawn(0,0,True)
-# print(type(Prueba) is Pawn)
-# TATAKAE!
-# tablero = Board()
-# tablero.showW()
-# tablero.play(Coordinate(6, 7), Coordinate(5, 5))
-# tablero.showB()
-# tablero.play(Coordinate(4, 6), Coordinate(4, 7))
-# tablero.showW()
+# Tatakae
