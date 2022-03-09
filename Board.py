@@ -5,8 +5,8 @@ from coordinates import Coordinate
 class Board:
     def __init__(self):
         self.turn = True  # if turn==True, White plays, if turn==False, Black plays
-        self.whiteKing = King(3, 0, True)
-        self.blackKing = King(3, 7, False)
+        self.blackKing = King(4, 0, False)
+        self.whiteKing = King(4, 7, True)
 
         self.board = [None] * 8  # Init of a 8x8 matrix, filled with "None" values.
         for i in range(8):
@@ -86,6 +86,8 @@ class Board:
             n = n - 1
         print("   A   B   C   D   E   F   G   H  \n")
 
+    # ------------------------------------------------------------------------------------------------------------------
+
     def play(self, coordinate_orig, coordinate_dest):
         # 0º Condition: there is a piece in the Origin Coordinates
         if self.getOnCoord(coordinate_orig) is None:
@@ -137,25 +139,28 @@ class Board:
         pieceRemoved = self.getOnCoord(coordinate_dest)  # Save eaten piece in case the move leaves your king on check
         self.setCoord(coordinate_dest, PieceAux)
         self.setCoord(coordinate_orig, None)
-        # PieceAux.setPos(coordinate_dest.getX(), coordinate_dest.getY())
+        PieceAux.setPos(coordinate_dest.getX(), coordinate_dest.getY())
         if type(PieceAux) is King:
             if self.turn is True:
-                self.whiteKing.setPos(coordinate_dest)
+                self.whiteKing.setPos(coordinate_dest.getX(), coordinate_dest.getY())
             else:
-                self.blackKing.setPos(coordinate_dest)
+                self.blackKing.setPos(coordinate_dest.getX(), coordinate_dest.getY())
 
         # Once the move is done, we need to check if your king is on check
 
-        if self.turn is True and self.check(self.whiteKing):
-            self.setCoord(coordinate_orig, PieceAux)
-            self.setCoord(coordinate_dest, pieceRemoved)
-            return print("!>>invalid move: Your king is left on check with this movement")
-        elif self.check(self.blackKing):
+        if self.turn:
+            if self.check(self.whiteKing):
+                self.setCoord(coordinate_orig, PieceAux)
+                self.setCoord(coordinate_dest, pieceRemoved)
+                return print("!>>invalid move: Your king is left on check with this movement")
+        elif not self.turn and self.check(self.blackKing):
             self.setCoord(coordinate_orig, PieceAux)
             self.setCoord(coordinate_dest, pieceRemoved)
             return print("!>>invalid move: Your king is left on check with this movement")
 
         self.turn = not self.turn
+
+    # ------------------------------------------------------------------------------------------------------------------
 
     # Given a King of certain team, returns if it is on Check, our method is going to be check every line from which the
     # king can be threatened,
@@ -165,36 +170,49 @@ class Board:
         # loop for checking every piece on King's Y axis
         i = 1
         blockYpos = False
-        blocYneg = False
+        blockYneg = False
         while i <= 7:
             yplus = y + i
             yminus = y - i
-            if 0 <= yplus <= 7 and blockYpos:  # checking if valid values on board
+            if 0 <= yplus <= 7 and not blockYpos:  # checking if valid values on board
                 piece = self.getOnCoord(Coordinate(x, yplus))
-                if type(piece) is Queen or piece is Rook and piece.color() is not self.turn:
+                if piece is not None and piece.getColor() is self.turn:
+                    blockYpos = True
+                elif type(piece) is Queen or piece is Rook and piece.getColor() is not self.turn:
                     return True
-
-            if 0 <= yminus <= 7 and blocYneg:
+            if 0 <= yminus <= 7 and not blockYneg:
                 piece = self.getOnCoord(Coordinate(x, yminus))
-                if type(piece) is Queen or piece is Rook and piece.color() is not self.turn:
+                if piece is not None and piece.getColor() is self.turn:
+                    blockYneg = True
+                elif type(piece) is Queen or piece is Rook and piece.getColor() is not self.turn:
                     return True
             i += 1
         # loop for checking every piece on King's X axis
         i = 1
+        blockXpos = False
+        blockXneg = False
         while i <= 7:
             xplus = x + i
             xminus = x - i
-            if 0 <= xplus <= 7:  # checking if valid values on board
+            if 0 <= xplus <= 7 and not blockXpos:  # checking if valid values on board
                 piece = self.getOnCoord(Coordinate(xplus, y))
-                if type(piece) is Queen or piece is Rook and piece.color() is not self.turn:
+                if piece is not None and piece.getColor() is self.turn:
+                    blockXpos = True
+                elif type(piece) is Queen or piece is Rook and piece.getColor() is not self.turn:
                     return True
-            if 0 <= xminus <= 7:
+            if 0 <= xminus <= 7 and not blockXneg:
                 piece = self.getOnCoord(Coordinate(xminus, y))
-                if type(piece) is Queen or piece is Rook and piece.color() is not self.turn:
+                if piece is not None and piece.getColor() is self.turn:
+                    blockXpos = True
+                elif type(piece) is Queen or piece is Rook and piece.getColor() is not self.turn:
                     return True
             i += 1
         # loop for checking every king's diagonal
         i = 1
+        blockI = False
+        blockII = False
+        blockIII = False
+        blockIV = False
         while i <= 7:
             xplus = x + i
             xminus = x - i
@@ -202,38 +220,54 @@ class Board:
             yminus = y - i
             if 0 <= xplus <= 7 and 0 <= yplus <= 7:
                 piece = self.getOnCoord(Coordinate(xplus, yplus))
-                if type(piece) is Bishop or piece is Queen and piece.color() is not self.turn:
-                    return True
-                elif type(piece) is Pawn and xplus - x == 1 and yplus - y == 1 and piece.color() is not self.turn:
-                    return True
+                if piece is not None and piece.getColor() is self.turn:
+                    blockI = True
+                else:
+                    self.checksDiagonal(piece, xplus, x, yplus, y)
+
                 piece = self.getOnCoord(Coordinate(xplus, yminus))
-                if type(piece) is Bishop or piece is Queen and piece.color() is not self.turn:
-                    return True
-                elif type(piece) is Pawn and xplus - x == 1 and y - yminus == 1 and piece.color() is not self.turn:
-                    return True
+                if piece is not None and piece.getColor() is self.turn:
+                    blockII = True
+                else:
+                    self.checksDiagonal(piece, xplus, x, yminus, y)
+
                 piece = self.getOnCoord(Coordinate(xminus, yplus))
-                if type(piece) is Bishop or piece is Queen and piece.color() is not self.turn:
-                    return True
-                elif type(piece) is Pawn and x - xminus == 1 and yplus - y == 1 and piece.color() is not self.turn:
-                    return True
+                if piece is not None and piece.getColor() is self.turn:
+                    blockIII = True
+                else:
+                    self.checksDiagonal(piece, xminus, x, yplus, y)
+
                 piece = self.getOnCoord(Coordinate(xminus, yminus))
-                if type(piece) is Bishop or piece is Queen and piece.color() is not self.turn:
-                    return True
-                elif type(piece) is Pawn and x - xminus == 1 and y - yminus == 1 and piece.color() is not self.turn:
-                    return True
+                if piece is not None and piece.getColor() is self.turn:
+                    blockIV = True
+                else:
+                    self.checksDiagonal(piece, xminus, x, yminus, y)
             i += 1
         return False
 
-    # def checksDiagonal(self,piece):
+    def checksDiagonal(self, piece, xplus, x, yplus, y ):
+        if type(piece) is Bishop or piece is Queen and piece.getColor() is not self.turn:
+            return True
+        elif type(piece) is Pawn and abs(xplus - x) == 1 and abs(yplus - y) == 1 and piece.getColor() is not self.turn:
+            return True
 
     # def checksNonDiagonal(self,piece):
 
-    # Sudo/God Functions, so Gabri is happy ;)
+    # ------------------------------------------------------------------------------------------------------------------
+
+    # Sudo/God Functions, so Gabri is happy ;) :
+
     def sudoPlay(self, coordinate_orig, coordinate_dest):
         self.setCoord(coordinate_dest, self.getOnCoord(coordinate_orig))
         self.setCoord(coordinate_orig, None)
 
     def sudoKill(self, coordinateKill):
         self.setCoord(coordinateKill, None)
+
+    def sudoNuke(self):
+        self.board = [None] * 8
+        for i in range(8):
+            self.board[i] = [None] * 8
+
 
 # Tatakae
