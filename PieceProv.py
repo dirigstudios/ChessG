@@ -49,7 +49,7 @@ class Pawn(Piece):
         return print(f"[{self.type}]", end=" ")
 
     def getType(self):
-        return "peon"
+        return "pawn"
 
     def setFirstMoveFalse(self):
         self.firstmove = False
@@ -95,7 +95,7 @@ class Rook(Piece):
         return print(f"[{self.type}]", end=" ")
 
     def getType(self):
-        return "torre"
+        return "rook"
 
     def canMove(self, posx, posy):
         position = []
@@ -143,7 +143,7 @@ class Bishop(Piece):
         return print(f"[{self.type}]", end=" ")
 
     def getType(self):
-        return "alfil"
+        return "bishop"
 
     def canMove(self, posx, posy):
         positions = []
@@ -185,7 +185,7 @@ class Knight(Piece):
         return print(f"[{self.type}]", end=" ")
 
     def getType(self):
-        return "caballo"
+        return "knight"
 
     def canMove(self, posx, posy):
         positions = []
@@ -226,7 +226,7 @@ class Queen(Piece):
         return print(f"[{self.type}]", end=" ")
 
     def getType(self):
-        return "dama"
+        return "queen"
 
     def canMove(self, posx, posy):
         # The queen is a fusion of the Rook and the Bishop, so we can merge the code to get the queens one
@@ -290,7 +290,7 @@ class King(Piece):
         return print(f"[{self.type}]", end=" ")
 
     def getType(self):
-        return "rey"
+        return "king"
 
     def canMove(self, posx, posy):
         position = []
