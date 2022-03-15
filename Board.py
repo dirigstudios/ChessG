@@ -165,6 +165,13 @@ class Board:
     # Given a King of certain team, returns if it is on Check, our method is going to be check every line from which the
     # king can be threatened,
     def check(self, king):
+
+        #debugging time 10-3-22:
+        #no detecta la amenaza del peon
+        #condiciones while con los booleanos para salirse antes (y en el if tmb)
+        #optimizar lo de la diagonal
+        #miramos solo las casillas individuales, pero no tenemos en cuenta que delante puede haber piezas enemigas prohibiendo ese problema
+
         x = king.getX()
         y = king.getY()
         # loop for checking every piece on King's Y axis
@@ -178,13 +185,13 @@ class Board:
                 piece = self.getOnCoord(Coordinate(x, yplus))
                 if piece is not None and piece.getColor() is self.turn:
                     blockYpos = True
-                elif type(piece) is Queen or piece is Rook and piece.getColor() is not self.turn:
+                elif type(piece) is Queen or type(piece) is Rook and piece.getColor() is not self.turn:
                     return True
             if 0 <= yminus <= 7 and not blockYneg:
                 piece = self.getOnCoord(Coordinate(x, yminus))
                 if piece is not None and piece.getColor() is self.turn:
                     blockYneg = True
-                elif type(piece) is Queen or piece is Rook and piece.getColor() is not self.turn:
+                elif type(piece) is Queen or type(piece) is Rook and piece.getColor() is not self.turn:
                     return True
             i += 1
         # loop for checking every piece on King's X axis
@@ -198,13 +205,13 @@ class Board:
                 piece = self.getOnCoord(Coordinate(xplus, y))
                 if piece is not None and piece.getColor() is self.turn:
                     blockXpos = True
-                elif type(piece) is Queen or piece is Rook and piece.getColor() is not self.turn:
+                elif type(piece) is Queen or type(piece) is Rook and piece.getColor() is not self.turn:
                     return True
             if 0 <= xminus <= 7 and not blockXneg:
                 piece = self.getOnCoord(Coordinate(xminus, y))
                 if piece is not None and piece.getColor() is self.turn:
                     blockXpos = True
-                elif type(piece) is Queen or piece is Rook and piece.getColor() is not self.turn:
+                elif type(piece) is Queen or type(piece) is Rook and piece.getColor() is not self.turn:
                     return True
             i += 1
         # loop for checking every king's diagonal
@@ -246,7 +253,7 @@ class Board:
         return False
 
     def checksDiagonal(self, piece, xplus, x, yplus, y ):
-        if type(piece) is Bishop or piece is Queen and piece.getColor() is not self.turn:
+        if type(piece) is Bishop or type(piece) is Queen and piece.getColor() is not self.turn:
             return True
         elif type(piece) is Pawn and abs(xplus - x) == 1 and abs(yplus - y) == 1 and piece.getColor() is not self.turn:
             return True
