@@ -69,10 +69,10 @@ class Pawn(Piece):
                 elif self.posy - posy == 1:
                     return [Coordinate(posx, posy)]
         else: # If the movement is to capture a piece we check if the movement is valid
-            if not self.color:
+            if self.color:
                 if ((self.posy - posy) == 1) and (-1 <= (posx - self.posx) <= 1):
                     return [Coordinate(posx, posy)]
-            if self.color:
+            if not self.color:
                 if ((posy - self.posy) == 1) and (-1 <= (posx - self.posx) <= 1):
                     return [Coordinate(posx, posy)]
         return positions
